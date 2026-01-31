@@ -1,0 +1,1246 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Generated schema for Root",
+    "type": "object",
+    "properties": {
+        "institutes": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "pincode": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "gstin": {
+                        "type": "string"
+                    },
+                    "logo_url": {
+                        "type": "string"
+                    },
+                    "owner_name": {
+                        "type": "string"
+                    },
+                    "owner_email": {
+                        "type": "string"
+                    },
+                    "owner_phone": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "subscription_plan": {
+                        "type": "string"
+                    },
+                    "subscription_expires_at": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "type",
+                    "address",
+                    "city",
+                    "state",
+                    "pincode",
+                    "phone",
+                    "email",
+                    "gstin",
+                    "logo_url",
+                    "owner_name",
+                    "owner_email",
+                    "owner_phone",
+                    "status",
+                    "subscription_plan",
+                    "subscription_expires_at",
+                    "created_at"
+                ]
+            }
+        },
+        "branches": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "contact_person": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "capacity_max_students": {
+                        "type": "number"
+                    },
+                    "opening_date": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "name",
+                    "address",
+                    "contact_person",
+                    "phone",
+                    "email",
+                    "status",
+                    "capacity_max_students",
+                    "opening_date"
+                ]
+            }
+        },
+        "academic_years": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "start_date": {
+                        "type": "string"
+                    },
+                    "end_date": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "is_locked": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "name",
+                    "start_date",
+                    "end_date",
+                    "status",
+                    "is_locked"
+                ]
+            }
+        },
+        "mediums": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "name",
+                    "code",
+                    "status"
+                ]
+            }
+        },
+        "standards": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "sort_order": {
+                        "type": "number"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "name",
+                    "sort_order",
+                    "status"
+                ]
+            }
+        },
+        "subjects": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "standard_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "standard_id",
+                    "name",
+                    "code",
+                    "status"
+                ]
+            }
+        },
+        "teachers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "employee_code": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "alternate_phone": {},
+                    "gender": {
+                        "type": "string"
+                    },
+                    "date_of_birth": {
+                        "type": "string"
+                    },
+                    "qualification": {
+                        "type": "string"
+                    },
+                    "specialization": {
+                        "type": "string"
+                    },
+                    "experience_years": {
+                        "type": "number"
+                    },
+                    "joining_date": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "pincode": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "photo_url": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "employee_code",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "phone",
+                    "alternate_phone",
+                    "gender",
+                    "date_of_birth",
+                    "qualification",
+                    "specialization",
+                    "experience_years",
+                    "joining_date",
+                    "address",
+                    "city",
+                    "state",
+                    "pincode",
+                    "status",
+                    "photo_url"
+                ]
+            }
+        },
+        "students": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "standard_id": {
+                        "type": "number"
+                    },
+                    "medium_id": {
+                        "type": "number"
+                    },
+                    "admission_number": {
+                        "type": "string"
+                    },
+                    "roll_number": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string"
+                    },
+                    "date_of_birth": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "pincode": {
+                        "type": "string"
+                    },
+                    "admission_date": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "photo_url": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "academic_year_id",
+                    "standard_id",
+                    "medium_id",
+                    "admission_number",
+                    "roll_number",
+                    "first_name",
+                    "last_name",
+                    "phone",
+                    "gender",
+                    "date_of_birth",
+                    "address",
+                    "city",
+                    "state",
+                    "pincode",
+                    "admission_date",
+                    "status",
+                    "photo_url"
+                ]
+            }
+        },
+        "parents": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "alternate_phone": {
+                        "type": "string"
+                    },
+                    "occupation": {
+                        "type": "string"
+                    },
+                    "annual_income": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "pincode": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "phone",
+                    "occupation",
+                    "address",
+                    "city",
+                    "state",
+                    "pincode"
+                ]
+            }
+        },
+        "student_parent_relations": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "student_id": {
+                        "type": "number"
+                    },
+                    "parent_id": {
+                        "type": "number"
+                    },
+                    "relation": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "student_id",
+                    "parent_id",
+                    "relation"
+                ]
+            }
+        },
+        "batches": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "standard_id": {
+                        "type": "number"
+                    },
+                    "medium_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "capacity": {
+                        "type": "number"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "academic_year_id",
+                    "standard_id",
+                    "medium_id",
+                    "name",
+                    "capacity",
+                    "status"
+                ]
+            }
+        },
+        "batch_students": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "batch_id": {
+                        "type": "number"
+                    },
+                    "student_id": {
+                        "type": "number"
+                    },
+                    "enrollment_date": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "batch_id",
+                    "student_id",
+                    "enrollment_date"
+                ]
+            }
+        },
+        "batch_teachers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "batch_id": {
+                        "type": "number"
+                    },
+                    "teacher_id": {
+                        "type": "number"
+                    },
+                    "subject_id": {
+                        "type": "number"
+                    },
+                    "assigned_date": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "batch_id",
+                    "teacher_id",
+                    "subject_id",
+                    "assigned_date"
+                ]
+            }
+        },
+        "timetable": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "batch_id": {
+                        "type": "number"
+                    },
+                    "subject_id": {
+                        "type": "number"
+                    },
+                    "teacher_id": {
+                        "type": "number"
+                    },
+                    "day_of_week": {
+                        "type": "string"
+                    },
+                    "start_time": {
+                        "type": "string"
+                    },
+                    "end_time": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "academic_year_id",
+                    "batch_id",
+                    "subject_id",
+                    "teacher_id",
+                    "day_of_week",
+                    "start_time",
+                    "end_time",
+                    "status"
+                ]
+            }
+        },
+        "attendance": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "batch_id": {
+                        "type": "number"
+                    },
+                    "student_id": {
+                        "type": "number"
+                    },
+                    "attendance_date": {
+                        "type": "string"
+                    },
+                    "timetable_id": {
+                        "type": "number"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "marked_by_user_id": {
+                        "type": "number"
+                    },
+                    "marked_at": {
+                        "type": "string"
+                    },
+                    "is_locked": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "academic_year_id",
+                    "batch_id",
+                    "student_id",
+                    "attendance_date",
+                    "status",
+                    "marked_by_user_id",
+                    "marked_at",
+                    "is_locked"
+                ]
+            }
+        },
+        "tests": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "batch_id": {
+                        "type": "number"
+                    },
+                    "subject_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "test_date": {
+                        "type": "string"
+                    },
+                    "max_marks": {
+                        "type": "number"
+                    },
+                    "passing_marks": {
+                        "type": "number"
+                    },
+                    "weightage": {
+                        "type": "number"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_by_user_id": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "academic_year_id",
+                    "batch_id",
+                    "subject_id",
+                    "name",
+                    "test_date",
+                    "max_marks",
+                    "passing_marks",
+                    "weightage",
+                    "status",
+                    "created_by_user_id"
+                ]
+            }
+        },
+        "marks": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "test_id": {
+                        "type": "number"
+                    },
+                    "student_id": {
+                        "type": "number"
+                    },
+                    "marks_obtained": {
+                        "type": "number"
+                    },
+                    "remarks": {
+                        "type": "string"
+                    },
+                    "marked_by_user_id": {
+                        "type": "number"
+                    },
+                    "marked_at": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "test_id",
+                    "student_id",
+                    "marks_obtained",
+                    "remarks",
+                    "marked_by_user_id",
+                    "marked_at"
+                ]
+            }
+        },
+        "fee_structures": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "standard_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "total_amount": {
+                        "type": "number"
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "frequency": {
+                        "type": "string"
+                    },
+                    "due_date": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "academic_year_id",
+                    "standard_id",
+                    "name",
+                    "total_amount",
+                    "currency",
+                    "frequency",
+                    "due_date",
+                    "status"
+                ]
+            }
+        },
+        "fee_ledgers": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "student_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "fee_structure_id": {
+                        "type": "number"
+                    },
+                    "transaction_date": {
+                        "type": "string"
+                    },
+                    "transaction_type": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "balance": {
+                        "type": "number"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "created_by_user_id": {
+                        "type": "number"
+                    },
+                    "payment_id": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "student_id",
+                    "academic_year_id",
+                    "fee_structure_id",
+                    "transaction_date",
+                    "transaction_type",
+                    "amount",
+                    "balance",
+                    "description",
+                    "created_by_user_id"
+                ]
+            }
+        },
+        "fee_payments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "student_id": {
+                        "type": "number"
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "payment_date": {
+                        "type": "string"
+                    },
+                    "payment_method": {
+                        "type": "string"
+                    },
+                    "transaction_id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "received_by_user_id": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "student_id",
+                    "amount",
+                    "payment_date",
+                    "payment_method",
+                    "transaction_id",
+                    "status",
+                    "received_by_user_id"
+                ]
+            }
+        },
+        "announcements": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "target_audience": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "string"
+                    },
+                    "published_at": {
+                        "type": "string"
+                    },
+                    "created_by_user_id": {
+                        "type": "number"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "title",
+                    "message",
+                    "target_audience",
+                    "priority",
+                    "published_at",
+                    "created_by_user_id",
+                    "status"
+                ]
+            }
+        },
+        "assignments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "batch_id": {
+                        "type": "number"
+                    },
+                    "subject_id": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "assigned_date": {
+                        "type": "string"
+                    },
+                    "due_date": {
+                        "type": "string"
+                    },
+                    "max_marks": {
+                        "type": "number"
+                    },
+                    "created_by_user_id": {
+                        "type": "number"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "academic_year_id",
+                    "batch_id",
+                    "subject_id",
+                    "title",
+                    "description",
+                    "assigned_date",
+                    "due_date",
+                    "max_marks",
+                    "created_by_user_id",
+                    "status"
+                ]
+            }
+        },
+        "audit_logs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "user_id": {
+                        "type": "number"
+                    },
+                    "action": {
+                        "type": "string"
+                    },
+                    "entity_type": {
+                        "type": "string"
+                    },
+                    "entity_id": {
+                        "type": "number"
+                    },
+                    "changes": {
+                        "type": "string"
+                    },
+                    "ip_address": {
+                        "type": "string"
+                    },
+                    "user_agent": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "user_id",
+                    "action",
+                    "entity_type",
+                    "entity_id",
+                    "changes",
+                    "ip_address",
+                    "user_agent",
+                    "created_at"
+                ]
+            }
+        },
+        "users": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "last_login_at": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "name",
+                    "email",
+                    "phone",
+                    "password",
+                    "role",
+                    "is_active",
+                    "last_login_at",
+                    "created_at"
+                ]
+            }
+        }
+    },
+    "required": [
+        "institutes",
+        "branches",
+        "academic_years",
+        "mediums",
+        "standards",
+        "subjects",
+        "teachers",
+        "students",
+        "parents",
+        "student_parent_relations",
+        "batches",
+        "batch_students",
+        "batch_teachers",
+        "timetable",
+        "attendance",
+        "tests",
+        "marks",
+        "fee_structures",
+        "fee_ledgers",
+        "fee_payments",
+        "announcements",
+        "assignments",
+        "audit_logs",
+        "users"
+    ]
+}

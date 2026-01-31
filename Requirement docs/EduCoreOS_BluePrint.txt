@@ -1,0 +1,1888 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                              E D U C O R E O S                               ║
+║                                                                              ║
+║            Tuition & Coaching Institute Operating System (SaaS)              ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ SYSTEM CLASSIFICATION                                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  Architecture:    Design-First, Audit-First, Multi-Tenant
+  Domain:          Educational Operations Management
+  Version:         1.0.0 (Phase 1 - Frontend)
+  Status:          SPECIFICATION - LOCKED
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ WHAT THIS IS                                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  ✓  Operational Backbone
+  ✓  Decision-Support System for Owners
+  ✓  Discipline & Execution System for Admins
+  ✓  Friction-Reduction Tool for Teachers
+  ✓  Transparency Layer for Parents & Students
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ WHAT THIS IS NOT                                                             │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+  ✗  NOT an LMS (Learning Management System)
+  ✗  NOT a School ERP
+  ✗  NOT a Messaging Application
+  ✗  NOT a Feature Playground
+
+═══════════════════════════════════════════════════════════════════════════════
+
+⚠️  LEGAL NOTICE: This document is LAW for development.
+    No interpretation, no improvisation, no shortcuts.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 1: PRODUCT INVARIANTS                                              ┃
+┃ Status: IMMUTABLE                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  Purpose: These rules exist to prevent restarts.
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ INVARIANT 1: Multi-Tenant SaaS                                             │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Every entity scoped by `institute_id` and `branch_id`
+    • No shared global data
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ INVARIANT 2: Single Academic Context                                       │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Year, Medium, Shift, Branch are always active
+    • Context affects EVERY screen and query
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ INVARIANT 3: Role Isolation                                                │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Owner ≠ Admin ≠ Teacher ≠ Parent ≠ Student
+    • No screen exists without a role justification
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ INVARIANT 4: Audit-First Architecture                                      │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • No silent edits
+    • Reasons required for sensitive changes
+    • Logs visible in UI
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ INVARIANT 5: Soft Delete Everywhere                                        │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • No hard deletes in business flows
+    • Restore is always possible
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ INVARIANT 6: Design Leads Development                                      │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • UI clarity > backend cleverness
+    • Backend mirrors screens, not vice versa
+
+  ⚠️  VALIDATION REQUIREMENT:
+      If any of the above is violated, the build is considered INVALID.
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 2: USER ROLES                                                      ┃
+┃ Status: FROZEN                                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  Principle: Roles are not permissions — they are JOBS.
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ ROLE 1: OWNER                                                              │
+  └────────────────────────────────────────────────────────────────────────────┘
+    Scope:     Institute-wide and cross-branch view
+    Function:  • Strategy
+               • Finance
+               • Governance
+               • Insights
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ ROLE 2: ADMIN                                                              │
+  └────────────────────────────────────────────────────────────────────────────┘
+    Scope:     Branch-scoped authority
+    Function:  • Daily execution
+               • Coordination
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ ROLE 3: TEACHER                                                            │
+  └────────────────────────────────────────────────────────────────────────────┘
+    Scope:     Batch-level operations
+    Function:  • Academic delivery
+               • Attendance
+               • Assessments
+               • Remarks
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ ROLE 4: PARENT                                                             │
+  └────────────────────────────────────────────────────────────────────────────┘
+    Scope:     Read-only monitoring
+    Function:  • Transparency, not control
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ ROLE 5: STUDENT                                                            │
+  └────────────────────────────────────────────────────────────────────────────┘
+    Scope:     Read-only self access
+    Function:  • Personal academic visibility
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 3: TECH STACK                                                      ┃
+┃ Status: LOCKED                                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ FRONTEND STACK                                                             │
+  └────────────────────────────────────────────────────────────────────────────┘
+    Core:          React 19 + TypeScript
+    Styling:       Tailwind CSS + Shadcn/UI
+    State:         Zustand
+    Data Fetch:    TanStack Query
+    Build:         Vite
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ BACKEND STACK (Phase 2)                                                    │
+  └────────────────────────────────────────────────────────────────────────────┘
+    Framework:     Laravel
+    API:           REST
+    Security:      RBAC at API level
+    Queue:         Queue-based notifications
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ DESIGN SYSTEM                                                              │
+  └────────────────────────────────────────────────────────────────────────────┘
+    Config:        theme.config.ts for branding
+    Layout:        Bento dashboards
+    Tables:        Dense tables, breathable dashboards
+    Panels:        Sheets/Drawers for profiles
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 4: CLAUDE CODE - ABSOLUTE SYSTEM INSTRUCTION                       ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  CONSTRAINT: Claude must build ONLY what is defined here.
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ INITIALIZATION MODE: DESIGN-ONLY                                           ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    Technology:    React 19 + Tailwind + Shadcn only
+    Copy:          SaaS-grade copy (no lorem, no casual tone)
+    Sequence:      Follow build order strictly
+    Data:          Use mock data to drive UI logic
+    Scope:         No extra features, no assumptions
+    Changes:       No refactoring without instruction
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ OPERATIONAL ROLE: EXECUTOR                                                 ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    Claude is an EXECUTOR, not a product thinker.
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 5: PROJECT STRUCTURE                                               ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ DIRECTORY HIERARCHY                                                        │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+    src/
+     ├── app/
+     │    ├── layout.tsx
+     │    ├── role-layouts/
+     │    └── routes.ts
+     │
+     ├── components/
+     │    ├── ui/              [Shadcn components]
+     │    ├── tables/          [Data grids]
+     │    ├── charts/          [Visualizations]
+     │    └── common/          [Reusable blocks]
+     │
+     ├── modules/
+     │    ├── academic/        [Years, Mediums, Standards, Subjects]
+     │    ├── people/          [Students, Parents, Teachers, Admins]
+     │    ├── routine/         [Batches, Timetables]
+     │    ├── attendance/      [Marking, Logs, Reports]
+     │    ├── assessments/     [Tests, Marks]
+     │    ├── finance/         [Fees, Payments, Receipts]
+     │    ├── communication/   [Announcements, Assignments]
+     │    ├── hr/              [Staff Attendance, Payroll]
+     │    └── insights/        [Analytics, Dashboards]
+     │
+     ├── hooks/                [Custom React hooks]
+     ├── data/
+     │    └── mockData.json    [Mock data engine]
+     ├── theme/                [Branding config]
+     └── utils/                [Helpers]
+
+  ⚠️  CONSTRAINT: No ad-hoc folders. No dumping ground.
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 6: BUILD ORDER                                                     ┃
+┃ Status: STRICT, NO PARALLELISM                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ STEP 1: APPLICATION SHELL                                                  ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    Components Required:
+      → MainLayout
+      → Persistent Sidebar
+      → Academic Context Header (Year / Medium / Shift / Branch)
+      → Role Switcher (mock)
+      → Global Search placeholder (Ctrl+K)
+
+    ⚠️  Nothing else is built before this.
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ STEP 2: NAVIGATION ENGINE                                                  ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    Components Required:
+      → useNavigation(role)
+      → Role-aware sidebar nodes
+      → Group highlighting
+      → Permission-aware rendering
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ STEP 3: MOCK DATA ENGINE                                                   ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    mockData.json must include:
+      → Multiple branches per institute
+      → Medium isolation per branch
+      → Many-to-many Parent ↔ Student mapping
+      → Teachers assigned to multiple batches
+      → Partial data (missing, inactive, archived)
+
+    Design Principle: UI behavior must emerge from data — not conditionals.
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ STEP 4: OWNER ROLE (First Priority)                                        ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    Build Order:
+      1. Overview Dashboard (KPIs, alerts, trends)
+      2. Academic Core (Years, Mediums, Standards, Subjects)
+      3. People Core (Admins, Teachers)
+      4. Finance Core (Fee structures, collections)
+      5. Insights (Cross-branch analytics)
+      6. Control Panel (RBAC, Audit logs)
+
+    UX Goal: Owner UI must feel strategic, not clerical.
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ STEP 5: ADMIN ROLE                                                         ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    Features:
+      → Student lifecycle (admit → active → archive)
+      → Batch allocation
+      → Parent linking
+      → Attendance edit with reason & audit
+      → Fee entry & receipts
+      → Timetable with conflict hints
+
+    UX Goal: Admin UI is dense, fast, task-oriented.
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ STEP 6: TEACHER ROLE                                                       ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    Features:
+      → My Day
+      → Attendance marking (auto-lock)
+      → Test creation
+      → Marks entry
+      → Student performance view
+
+    UX Goal: Reduce mistakes, reduce friction.
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ STEP 7: PARENT & STUDENT ROLES                                             ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+    Features (Read-only, visual-first):
+      → Attendance calendar
+      → Progress charts
+      → Fee status & receipts
+      → Announcements
+      → Downloads
+
+    UX Goal: No edits. No admin leakage.
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 7: CANONICAL CORE MODULES                                          ┃
+┃ Status: NO ADDITIONS ALLOWED                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ MODULE REGISTRY                                                            │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+    01. Academic Core
+    02. People Core
+    03. Routine & Scheduling
+    04. Attendance
+    05. Assessment
+    06. Finance
+    07. Communication
+    08. HR & Payroll
+    09. Insights & Reporting
+    10. Control & Audit
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ REQUIRED COMPONENTS PER MODULE                                             │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+    • Tables
+    • Filters
+    • Audit visibility
+    • Export placeholders
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 8: DATA MODEL PRINCIPLES                                           ┃
+┃ Status: UI MUST RESPECT THIS                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ PRINCIPLE 1: Everything scoped to branch                                   │
+  │ PRINCIPLE 2: Parent ↔ Student is many-to-many                              │
+  │ PRINCIPLE 3: Fees are ledger-based                                         │
+  │ PRINCIPLE 4: Attendance edits require reason                               │
+  │ PRINCIPLE 5: Tests & marks are immutable without audit                     │
+  │ PRINCIPLE 6: Soft delete everywhere                                        │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+  ⚠️  If UI ignores these, backend will break later.
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 9: NON-NEGOTIABLE UI RULES                                         ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Dashboards breathe                                                 │
+  │ RULE 2: Tables scroll                                                      │
+  │ RULE 3: Filters are visible                                                │
+  │ RULE 4: Destructive actions gated                                          │
+  │ RULE 5: Edit history discoverable                                          │
+  │ RULE 6: Labels unambiguous                                                 │
+  │ RULE 7: No decorative UI noise                                             │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 10: EXPLICIT EXCLUSIONS                                            ┃
+┃ Status: DO NOT BUILD                                                       ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ FORBIDDEN FEATURES                                                         │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+    ✗  LMS features (videos, quizzes)
+    ✗  Chat systems
+    ✗  AI grading
+    ✗  Gamification
+    ✗  Premature backend optimization
+    ✗  Feature experiments
+
+  This is v1 survival software.
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 11: SUCCESS DEFINITION                                             ┃
+┃ Status: ACCEPTANCE CRITERIA                                                ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  EduCoreOS is successful if:
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ SUCCESS METRIC 1: Owner understands the institute in 30 seconds            │
+  │ SUCCESS METRIC 2: Admin operates without training                          │
+  │ SUCCESS METRIC 3: Teacher commits fewer errors                             │
+  │ SUCCESS METRIC 4: Parents stop calling admins                              │
+  │ SUCCESS METRIC 5: Institute survives staff turnover                        │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║ This is an operating system, not an app.                                   ║
+  ║ Build accordingly.                                                         ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                          DATABASE SCHEMA SPECIFICATION
+═══════════════════════════════════════════════════════════════════════════════
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ DATABASE SCHEMA (Authoritative – v1)                                       ┃
+┃ Status: FROZEN FOR PHASE 1 & PHASE 2                                       ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ⚠️  Any deviation requires architectural approval.
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ GLOBAL CONVENTIONS                                                         │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+    • All tables use BIGINT primary keys
+    • Multi-tenant enforced via `institute_id`
+    • Branch isolation via `branch_id`
+    • `deleted_at` used for soft deletes where applicable
+    • No ENUMs for business logic (use strings / reference tables)
+    • All money fields use DECIMAL(10,2)
+    • All timestamps use UTC
+
+─────────────────────────────────────────────────────────────────────────────
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 1: CORE STRUCTURAL TABLES                                      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ institutes                                                                 │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ name                                                                       │
+  │ type                        [tuition / coaching / school]                  │
+  │ logo_url                                                                   │
+  │ primary_color                                                              │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 2: ACADEMIC CONTEXT (System Backbone)                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ academic_years                                                             │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ display_name                [e.g. 2025-26]                                 │
+  │ start_date                                                                 │
+  │ end_date                                                                   │
+  │ is_active                                                                  │
+  │ is_locked                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ mediums                                                                    │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ name                        [English / Gujarati]                           │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ standards                                                                  │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ name                        [8th, 12th Sci]                                │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ subjects                                                                   │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ standard_id                                                                │
+  │ name                        [Maths, Physics]                               │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 3: USERS & IDENTITY (Single Source of Truth)                   ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ users                                                                      │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ name                                                                       │
+  │ email                                                                      │
+  │ phone                       [WhatsApp / OTP / Alerts]                      │
+  │ password                                                                   │
+  │ role                        [Owner/Admin/Teacher/Parent/Student]           │
+  │ is_active                                                                  │
+  │ last_login_at                                                              │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ branch_access                                                              │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ user_id                                                                    │
+  │ branch_id                                                                  │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 4: RBAC (Governance Layer)                                     ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ roles                                                                      │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ name                                                                       │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ permissions                                                                │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ module                      [attendance, finance, etc.]                    │
+  │ action                      [view, create, edit, delete]                   │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ role_permissions                                                           │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ role                                                                       │
+  │ permission_id                                                              │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 5: PEOPLE CORE                                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ students                                                                   │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ user_id                     [NULLABLE - student login optional]            │
+  │ admission_no                                                               │
+  │ name                                                                       │
+  │ standard_id                                                                │
+  │ medium_id                                                                  │
+  │ status                      [active / inactive / archived]                 │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  │ deleted_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ parents                                                                    │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ user_id                     [FK → users.id]                                │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ parent_student              [many-to-many]                                 │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ parent_id                                                                  │
+  │ student_id                                                                 │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ teachers                                                                   │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ user_id                     [FK → users.id]                                │
+  │ expertise_json                                                             │
+  │ salary_base                                                                │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 6: ROUTINE & SCHEDULING                                        ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ batches                                                                    │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ standard_id                                                                │
+  │ medium_id                                                                  │
+  │ name                                                                       │
+  │ shift                       [morning / evening]                            │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ batch_students                                                             │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ batch_id                                                                   │
+  │ student_id                                                                 │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ batch_teachers                                                             │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ batch_id                                                                   │
+  │ teacher_id                                                                 │
+  │ subject_id                                                                 │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ timetables                                                                 │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ batch_id                                                                   │
+  │ teacher_id                                                                 │
+  │ subject_id                                                                 │
+  │ day_of_week                                                                │
+  │ start_time                                                                 │
+  │ end_time                                                                   │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 7: ATTENDANCE CORE                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ attendance                                                                 │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ student_id                                                                 │
+  │ batch_id                                                                   │
+  │ date                                                                       │
+  │ status                      [P / A / L]                                    │
+  │ marked_by                   [user_id]                                      │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ attendance_logs                                                            │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ attendance_id                                                              │
+  │ old_status                                                                 │
+  │ new_status                                                                 │
+  │ reason                                                                     │
+  │ updated_by                  [user_id]                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 8: ASSESSMENT CORE                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ tests                                                                      │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ batch_id                                                                   │
+  │ subject_id                                                                 │
+  │ title                                                                      │
+  │ max_marks                                                                  │
+  │ test_date                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ marks                                                                      │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ test_id                                                                    │
+  │ student_id                                                                 │
+  │ marks_obtained                                                             │
+  │ teacher_remarks                                                            │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 9: FINANCE CORE (Ledger-Based)                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ fee_structures                                                             │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ standard_id                                                                │
+  │ total_amount                                                               │
+  │ installment_plan_json                                                      │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ student_ledgers                                                            │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ student_id                                                                 │
+  │ total_fees                                                                 │
+  │ paid_amount                                                                │
+  │ discount                                                                   │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ payments                                                                   │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ ledger_id                                                                  │
+  │ amount                                                                     │
+  │ method                      [Cash / UPI]                                   │
+  │ transaction_id                                                             │
+  │ payment_date                                                               │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ receipts                                                                   │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ payment_id                                                                 │
+  │ receipt_no                                                                 │
+  │ generated_at                                                               │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 10: COMMUNICATION CORE                                         ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ announcements                                                              │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ target_role                                                                │
+  │ target_batch_id                                                            │
+  │ title                                                                      │
+  │ message                                                                    │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ assignments                                                                │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ batch_id                                                                   │
+  │ subject_id                                                                 │
+  │ title                                                                      │
+  │ file_url                                                                   │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ notification_logs                                                          │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ recipient_id                [users.id]                                     │
+  │ channel                     [WhatsApp / Email]                             │
+  │ message                                                                    │
+  │ status                                                                     │
+  │ sent_at                                                                    │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 11: HR & PAYROLL                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ teacher_attendance                                                         │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ date                                                                       │
+  │ status                                                                     │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ teacher_leaves                                                             │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ from_date                                                                  │
+  │ to_date                                                                    │
+  │ reason                                                                     │
+  │ status                                                                     │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ salary_structures                                                          │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ monthly_amount                                                             │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ salary_payments                                                            │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ amount                                                                     │
+  │ payment_date                                                               │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 12: AUDIT, SECURITY & GOVERNANCE                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ audit_logs                                                                 │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ user_id                                                                    │
+  │ action                                                                     │
+  │ entity                                                                     │
+  │ entity_id                                                                  │
+  │ old_value_json                                                             │
+  │ new_value_json                                                             │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ data_exports                                                               │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ user_id                                                                    │
+  │ module                                                                     │
+  │ format                      [excel / pdf]                                  │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 1A: BRANCH MASTER & LIFECYCLE                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ branches                                                                   │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ name                                                                       │
+  │ address                                                                    │
+  │ contact_person                                                             │
+  │ phone                                                                      │
+  │ email                                                                      │
+  │ status                      [active / inactive / archived]                 │
+  │ capacity_max_students                                                      │
+  │ opening_date                                                               │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  │ deleted_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ branch_lifecycle_logs                                                      │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ branch_id                                                                  │
+  │ old_status                                                                 │
+  │ new_status                                                                 │
+  │ reason                                                                     │
+  │ changed_by                  [user_id]                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 2A: SHIFTS & ACADEMIC CALENDAR                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ shifts                                                                     │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ name                        [Morning / Evening / Afternoon]                │
+  │ start_time                                                                 │
+  │ end_time                                                                   │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ academic_calendar                                                          │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ academic_year_id                                                           │
+  │ event_type                  [holiday / closure / exam / buffer]            │
+  │ title                                                                      │
+  │ start_date                                                                 │
+  │ end_date                                                                   │
+  │ is_attendance_exempted                                                     │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ academic_year_lock_rules                                                   │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ academic_year_id                                                           │
+  │ lock_date                                                                  │
+  │ locked_modules_json         [attendance, marks, fees]                      │
+  │ locked_by                   [user_id]                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 5A: PARENT-STUDENT RELATIONSHIP METADATA                       ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ parent_student (ENHANCED)                                                  │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ parent_id                                                                  │
+  │ student_id                                                                 │
+  │ relationship_type           [father / mother / guardian / sibling]         │
+  │ is_primary_contact                                                         │
+  │ is_emergency_contact                                                       │
+  │ can_view_fees                                                              │
+  │ can_view_attendance                                                        │
+  │ can_view_marks                                                             │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 5B: TEACHER AVAILABILITY & WORKLOAD                            ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ teacher_availability                                                       │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ day_of_week                                                                │
+  │ available_from                                                             │
+  │ available_to                                                               │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ teacher_workload_constraints                                               │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ max_weekly_hours                                                           │
+  │ max_daily_hours                                                            │
+  │ max_consecutive_hours                                                      │
+  │ min_break_minutes                                                          │
+  │ effective_from                                                             │
+  │ effective_to                                                               │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ teacher_unavailability                                                     │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ unavailable_date                                                           │
+  │ from_time                   [NULLABLE - full day if null]                  │
+  │ to_time                     [NULLABLE - full day if null]                  │
+  │ reason                                                                     │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 6A: TIMETABLE EXTENSIONS & CONFLICT RESOLUTION                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ extra_classes                                                              │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ batch_id                                                                   │
+  │ teacher_id                                                                 │
+  │ subject_id                                                                 │
+  │ class_date                                                                 │
+  │ start_time                                                                 │
+  │ end_time                                                                   │
+  │ reason                                                                     │
+  │ created_by                  [user_id]                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ timetable_substitutions                                                    │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ timetable_id                [original timetable entry]                     │
+  │ original_teacher_id                                                        │
+  │ substitute_teacher_id                                                      │
+  │ substitution_date                                                          │
+  │ reason                                                                     │
+  │ created_by                  [user_id]                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ timetable_overrides                                                        │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ timetable_id                                                               │
+  │ override_date                                                              │
+  │ is_cancelled                                                               │
+  │ new_start_time              [NULLABLE]                                     │
+  │ new_end_time                [NULLABLE]                                     │
+  │ reason                                                                     │
+  │ created_by                  [user_id]                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ timetable_conflicts                                                        │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ conflict_type               [teacher_overlap / room_overlap / batch]       │
+  │ entity_id                   [teacher_id / room_id / batch_id]              │
+  │ timetable_id_1                                                             │
+  │ timetable_id_2                                                             │
+  │ detected_at                                                                │
+  │ resolved_at                 [NULLABLE]                                     │
+  │ resolution_note                                                            │
+  │ resolved_by                 [user_id, NULLABLE]                            │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 7A: ATTENDANCE POLICY & LOCKING RULES                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ attendance_policy                                                          │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ lock_hours_after_class      [Auto-lock N hours after class time]           │
+  │ edit_allowed_for_roles      [JSON: Owner, Admin]                           │
+  │ edit_window_hours           [Max hours after marking for edit]             │
+  │ require_reason_for_edit                                                    │
+  │ allow_late_entry_marking                                                   │
+  │ late_entry_requires_justification                                          │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ attendance (ENHANCED - add fields)                                         │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ ... (existing fields)                                                      │
+  │ is_locked                                                                  │
+  │ locked_at                                                                  │
+  │ late_entry_time             [NULLABLE]                                     │
+  │ late_entry_justification    [NULLABLE]                                     │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 8A: ASSESSMENT LIFECYCLE & GRADING                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ marks (ENHANCED - add fields)                                              │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ ... (existing fields)                                                      │
+  │ status                      [present / absent / exempt / retest]           │
+  │ retest_of_mark_id           [NULLABLE - FK to original mark]               │
+  │ is_final                                                                   │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ grading_schemas                                                            │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ name                        [Percentage / Grade / GPA]                     │
+  │ grading_rules_json          [Ranges and grade mappings]                    │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ assessment_visibility_rules                                                │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ test_id                                                                    │
+  │ visible_to_students_at      [NULLABLE - when students can view]            │
+  │ visible_to_parents_at       [NULLABLE - when parents can view]             │
+  │ auto_publish_on_completion                                                 │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 9A: FINANCE INSTALLMENTS & AGING                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ fee_installments                                                           │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ fee_structure_id                                                           │
+  │ installment_number                                                         │
+  │ due_date                                                                   │
+  │ amount                                                                     │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ student_installments                                                       │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ ledger_id                                                                  │
+  │ installment_number                                                         │
+  │ due_date                                                                   │
+  │ amount_due                                                                 │
+  │ amount_paid                                                                │
+  │ paid_date                   [NULLABLE]                                     │
+  │ status                      [pending / partial / paid / overdue]           │
+  │ aging_bucket                [0-30 / 30-60 / 60-90 / 90+]                   │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ fee_adjustments                                                            │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ ledger_id                                                                  │
+  │ adjustment_type             [discount / refund / penalty / waiver]         │
+  │ amount                                                                     │
+  │ reason                                                                     │
+  │ approved_by                 [user_id]                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ late_fee_policies                                                          │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ branch_id                                                                  │
+  │ grace_period_days                                                          │
+  │ late_fee_type               [flat / percentage]                            │
+  │ late_fee_amount                                                            │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 10A: COMMUNICATION ENGINE & TEMPLATES                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ notification_templates                                                     │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ template_key                [fee_reminder / attendance_alert / etc]        │
+  │ template_name                                                              │
+  │ channel                     [whatsapp / email / sms]                       │
+  │ language                    [en / gu / hi]                                 │
+  │ subject                     [For email]                                    │
+  │ body_template               [With placeholders: {{student_name}}]          │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ notification_event_mappings                                                │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ event_type                  [fee_due / low_attendance / marks_published]   │
+  │ template_id                                                                │
+  │ target_roles                [JSON: parent, student]                        │
+  │ send_automatically                                                         │
+  │ trigger_condition_json      [Rules for auto-send]                          │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ notification_logs (ENHANCED - add fields)                                  │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ ... (existing fields)                                                      │
+  │ template_id                 [NULLABLE]                                     │
+  │ retry_count                                                                │
+  │ last_retry_at               [NULLABLE]                                     │
+  │ failure_reason              [NULLABLE]                                     │
+  │ delivered_at                [NULLABLE]                                     │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 11A: HR PERFORMANCE & SALARY REVISIONS                         ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ teacher_performance_metrics                                                │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ academic_year_id                                                           │
+  │ metric_type                 [attendance_rate / student_satisfaction]       │
+  │ metric_value                                                               │
+  │ evaluation_date                                                            │
+  │ evaluated_by                [user_id]                                      │
+  │ notes                                                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ salary_revision_history                                                    │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ teacher_id                                                                 │
+  │ old_amount                                                                 │
+  │ new_amount                                                                 │
+  │ revision_type               [increment / promotion / adjustment]           │
+  │ effective_from                                                             │
+  │ reason                                                                     │
+  │ approved_by                 [user_id]                                      │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ substitute_payouts                                                         │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ substitution_id             [FK → timetable_substitutions]                 │
+  │ teacher_id                  [Substitute teacher]                           │
+  │ amount                                                                     │
+  │ payment_status              [pending / paid]                               │
+  │ paid_date                   [NULLABLE]                                     │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ payroll_approval_workflow                                                  │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ salary_payment_id                                                          │
+  │ submitted_by                [user_id]                                      │
+  │ submitted_at                                                               │
+  │ approved_by                 [user_id, NULLABLE]                            │
+  │ approved_at                 [NULLABLE]                                     │
+  │ rejected_by                 [user_id, NULLABLE]                            │
+  │ rejected_at                 [NULLABLE]                                     │
+  │ rejection_reason            [NULLABLE]                                     │
+  │ status                      [pending / approved / rejected]                │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 12A: GOVERNANCE & CRITICAL ACTION APPROVAL                     ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ ownership_transfers                                                        │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ from_user_id                                                               │
+  │ to_user_id                                                                 │
+  │ transfer_date                                                              │
+  │ reason                                                                     │
+  │ verification_token                                                         │
+  │ verified_at                 [NULLABLE]                                     │
+  │ status                      [pending / completed / cancelled]              │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ admin_role_handovers                                                       │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ branch_id                                                                  │
+  │ from_user_id                                                               │
+  │ to_user_id                                                                 │
+  │ handover_date                                                              │
+  │ handover_notes                                                             │
+  │ approved_by                 [Owner user_id]                                │
+  │ approved_at                 [NULLABLE]                                     │
+  │ status                      [pending / approved / rejected]                │
+  │ created_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ user_suspension_logs                                                       │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ user_id                                                                    │
+  │ action                      [suspend / reactivate]                         │
+  │ reason                                                                     │
+  │ suspended_by                [user_id]                                      │
+  │ suspended_at                                                               │
+  │ reactivated_by              [user_id, NULLABLE]                            │
+  │ reactivated_at              [NULLABLE]                                     │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ critical_action_approvals                                                  │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ action_type                 [delete_student / bulk_fee_waiver / etc]      │
+  │ entity_type                 [student / payment / batch]                    │
+  │ entity_id                                                                  │
+  │ requested_by                [user_id]                                      │
+  │ requested_at                                                               │
+  │ justification                                                              │
+  │ approved_by                 [user_id, NULLABLE]                            │
+  │ approved_at                 [NULLABLE]                                     │
+  │ rejected_by                 [user_id, NULLABLE]                            │
+  │ rejected_at                 [NULLABLE]                                     │
+  │ rejection_reason            [NULLABLE]                                     │
+  │ status                      [pending / approved / rejected / executed]     │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ TABLE GROUP 13: SYSTEM-LEVEL POLICIES & CONFIGURATION                       ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ data_backup_policies                                                       │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ backup_frequency            [daily / weekly / monthly]                     │
+  │ retention_days                                                             │
+  │ last_backup_at                                                             │
+  │ next_backup_at                                                             │
+  │ auto_export_enabled                                                        │
+  │ export_format               [sql / csv / json]                             │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ subscription_plans                                                         │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ plan_name                   [Free / Basic / Pro / Enterprise]              │
+  │ max_branches                                                               │
+  │ max_students_per_branch                                                    │
+  │ max_teachers                                                               │
+  │ features_json               [modules allowed]                              │
+  │ price_monthly                                                              │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ institute_subscriptions                                                    │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ plan_id                                                                    │
+  │ start_date                                                                 │
+  │ end_date                                                                   │
+  │ status                      [active / expired / cancelled]                 │
+  │ payment_status              [paid / pending / failed]                      │
+  │ auto_renew                                                                 │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ rate_limit_policies                                                        │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ endpoint_pattern            [/api/attendance/* etc]                        │
+  │ max_requests_per_minute                                                    │
+  │ max_requests_per_hour                                                      │
+  │ burst_allowance                                                            │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ data_retention_policies                                                    │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ entity_type                 [audit_logs / notifications / exports]         │
+  │ retention_days              [Days before auto-purge]                       │
+  │ archive_before_delete                                                      │
+  │ is_active                                                                  │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+  ╭────────────────────────────────────────────────────────────────────────────╮
+  │ environment_configs                                                        │
+  ├────────────────────────────────────────────────────────────────────────────┤
+  │ id                                                                         │
+  │ institute_id                                                               │
+  │ environment                 [demo / production]                            │
+  │ is_demo_data_seeded                                                        │
+  │ demo_reset_schedule         [NULLABLE - cron expression]                   │
+  │ production_go_live_date     [NULLABLE]                                     │
+  │ created_at                                                                 │
+  │ updated_at                                                                 │
+  ╰────────────────────────────────────────────────────────────────────────────╯
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                    BUSINESS RULES & OPERATIONAL POLICIES
+═══════════════════════════════════════════════════════════════════════════════
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 12: BRANCH LIFECYCLE RULES                                         ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Branch Status Transitions                                          │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Active → Inactive: Allowed by Owner only, requires reason
+    • Inactive → Active: Allowed by Owner only
+    • Active/Inactive → Archived: Allowed by Owner only, irreversible
+    • Archived branches remain in database but hidden from all operations
+    • All transitions logged in branch_lifecycle_logs with audit trail
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Branch Deactivation Constraints                                    │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Cannot deactivate if active students exist
+    • Cannot deactivate if current academic year is active
+    • Must settle all pending fees before archiving
+    • Owner receives warning with impact analysis before deactivation
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Branch-Level Analytics                                             │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Owner dashboard shows per-branch KPIs
+    • Metrics: enrollment, revenue, attendance rate, teacher utilization
+    • Branch comparison view available to Owner only
+    • Historical data preserved even after archival
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 13: ACADEMIC YEAR LOCKING RULES                                    ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Lock Behavior                                                      │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • When academic year is locked:
+      - No attendance can be marked or edited
+      - No marks can be entered or modified
+      - No fee adjustments allowed
+      - Read-only access for Admin and Teacher
+    • Owner can unlock temporarily with reason and auto-lock timer
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Lock Prerequisites                                                 │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • All tests must have marks finalized
+    • All attendance must be marked for all sessions
+    • All fee installments must be reconciled (not necessarily paid)
+    • Owner receives pre-lock checklist before confirming lock
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Post-Lock Operations                                               │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Reports and exports remain available
+    • Certificates can still be generated
+    • Historical data accessible to all roles per permission
+    • Audit logs remain queryable indefinitely
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 14: TIMETABLE CONFLICT RESOLUTION RULES                            ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Conflict Detection                                                 │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • System auto-detects conflicts on timetable creation/edit
+    • Conflict types:
+      - Teacher assigned to multiple batches at same time
+      - Batch scheduled in overlapping time slots
+      - Teacher scheduled during marked unavailability
+    • Conflicts logged in timetable_conflicts table
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Conflict Handling                                                  │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Hard conflicts: Block save, require immediate resolution
+    • Soft conflicts: Warning shown, Admin can override with reason
+    • Resolution tracked with timestamp and resolver user_id
+    • Unresolved conflicts shown in Admin dashboard alerts
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Substitution Priority                                              │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Substitute teacher must have matching subject expertise
+    • Substitute must not have conflicting schedule
+    • Substitute receives notification immediately
+    • Original teacher workload reduced, substitute workload increased
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 15: ATTENDANCE LOCKING & EDIT POLICY                               ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Auto-Lock Behavior                                                 │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Attendance auto-locks N hours after class end time
+      (N defined in attendance_policy table, default: 24 hours)
+    • Teacher cannot edit after lock
+    • Lock timestamp recorded in attendance.locked_at
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Edit Permissions After Lock                                        │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Admin: Can edit with mandatory reason
+    • Owner: Can edit with mandatory reason
+    • Teacher: Cannot edit (must request Admin)
+    • All edits logged in attendance_logs with justification
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Late Entry Handling                                                │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • If allow_late_entry_marking enabled:
+      - Teacher can mark "Late" (L) status with entry time
+      - Justification required if policy enforces
+      - Late entry counts as present but flagged in reports
+    • If disabled, only Present/Absent allowed
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 4: Holiday/Closure Exemption                                          │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Dates marked in academic_calendar as attendance-exempted
+      do not require attendance marking
+    • System auto-fills as "Holiday" (H) status
+    • No penalty for unmarked attendance on exempted dates
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 16: ASSESSMENT VISIBILITY & PUBLICATION RULES                      ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Mark Entry & Finalization                                          │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Teacher enters marks with status: present/absent/exempt/retest
+    • Marks remain draft until Teacher marks is_final = true
+    • After finalization, Teacher cannot edit without Admin approval
+    • Absent students automatically show "Absent" in reports
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Visibility Control                                                 │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Marks invisible to Student/Parent until published
+    • Publication rules in assessment_visibility_rules:
+      - Manual: Admin/Owner explicitly publishes
+      - Auto: System publishes when all marks finalized
+    • Published timestamp recorded per test
+    • Can unpublish if needed (with reason logged)
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Retest/Improvement Handling                                        │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Retest marks linked to original via retest_of_mark_id
+    • System shows both original and retest marks
+    • Higher mark used for final grade calculation
+    • Both marks visible in detailed report for audit
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 17: FEE COLLECTION & AGING RULES                                   ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Installment Tracking                                               │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Fee structure defines base installment schedule
+    • student_installments created per student on enrollment
+    • Due dates auto-set based on structure
+    • Status updated on payment: pending → partial → paid
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Aging Calculation                                                  │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Aging bucket calculated from due date:
+      - 0-30 days: Current
+      - 30-60 days: 30+ overdue
+      - 60-90 days: 60+ overdue
+      - 90+ days: 90+ overdue
+    • Aging updated daily via batch job
+    • Overdue installments flagged in Admin dashboard
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Late Fee Application                                               │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • If late_fee_policies active:
+      - Grace period applied before penalty
+      - Flat or percentage based on policy
+      - Late fee added to ledger as separate line item
+    • Late fees can be waived by Admin/Owner with reason
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 4: Discount & Refund Approval                                         │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Discounts > 10% require Owner approval
+    • Discounts ≤ 10% can be given by Admin
+    • Refunds always require Owner approval
+    • All adjustments logged in fee_adjustments with approver
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 18: NOTIFICATION DELIVERY & RETRY RULES                            ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Template Resolution                                                │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Event triggers (fee due, low attendance) mapped to templates
+    • System selects template by: event_type + channel + language
+    • Placeholders replaced with actual data at send time
+    • Template must exist or notification fails gracefully
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Delivery Retry Logic                                               │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Max 3 retry attempts on failure
+    • Retry intervals: 1 min, 5 min, 15 min
+    • Failure reasons logged in notification_logs
+    • After 3 failures, marked as "failed" and admin notified
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Channel Fallback                                                   │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • If WhatsApp fails after retries, fallback to SMS
+    • If both fail, fallback to Email
+    • Each fallback logged separately
+    • Final delivery channel recorded in notification_logs
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 19: CRITICAL ACTION APPROVAL MATRIX                                ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ CRITICAL ACTIONS REQUIRING APPROVAL                                        │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+    ACTION                      REQUESTOR        APPROVER         BYPASS
+    ────────────────────────────────────────────────────────────────────────
+    Delete Student              Admin            Owner            None
+    Bulk Fee Waiver (>5)        Admin            Owner            None
+    Archive Branch              Owner            -                None
+    Transfer Ownership          Owner            Email Verify     None
+    Unlock Academic Year        Admin            Owner            Auto 1hr
+    Bulk Mark Edit              Teacher          Admin            None
+    Refund >5000                Admin            Owner            None
+    Suspend Teacher             Admin            Owner            None
+    Delete Test                 Teacher          Admin            None
+    Bulk Student Transfer       Admin            Owner            None
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ APPROVAL WORKFLOW                                                          │
+  └────────────────────────────────────────────────────────────────────────────┘
+    1. Requestor submits action via critical_action_approvals
+    2. Approver receives in-app notification + email
+    3. Approver reviews justification and approves/rejects
+    4. On approval, action executed and logged in audit_logs
+    5. On rejection, requestor notified with reason
+    6. Pending approvals expire after 7 days
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 20: SUBSCRIPTION & LIMITS ENFORCEMENT                              ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Limit Enforcement                                                  │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • System checks limits before:
+      - Creating new branch
+      - Admitting new student
+      - Adding new teacher
+    • If limit exceeded, shows upgrade prompt
+    • Hard block on creation if subscription expired
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Grace Period on Expiry                                             │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • 7-day grace period after subscription end_date
+    • During grace: read-only mode for all roles
+    • Cannot mark attendance, enter marks, collect fees
+    • Can export data and generate reports
+    • After grace: complete system lock, Owner must renew
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Feature Gating                                                     │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Features checked against plan features_json
+    • Unavailable features hidden in UI
+    • API returns 403 if feature not in plan
+    • Upgrade prompts shown when accessing gated features
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ SECTION 21: DATA RETENTION & PURGE RULES                                   ┃
+┃ Status: MANDATORY                                                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 1: Automatic Purge Schedule                                           │
+  └────────────────────────────────────────────────────────────────────────────┘
+
+    ENTITY                      RETENTION        ARCHIVE          PURGE
+    ────────────────────────────────────────────────────────────────────────
+    Audit Logs                  365 days         Yes              After 2yr
+    Notification Logs           90 days          No               Hard delete
+    Data Exports                30 days          No               Hard delete
+    Deleted Students            Indefinite       Yes              Never
+    Archived Branches           Indefinite       Yes              Never
+    Inactive Users              180 days         Yes              After warn
+    Test Drafts (unsaved)       7 days           No               Hard delete
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 2: Archive Process                                                    │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Archived data moved to separate cold storage table
+    • Original record marked with archive_ref_id
+    • Archived data queryable via special API endpoint
+    • Owner can restore archived data within retention window
+
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │ RULE 3: Manual Purge Restrictions                                          │
+  └────────────────────────────────────────────────────────────────────────────┘
+    • Owner can request early purge with justification
+    • Requires email verification + OTP
+    • Purge irreversible, confirmation shown
+    • Core academic records (students, marks, fees) never purged
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                          END OF SPECIFICATION
+═══════════════════════════════════════════════════════════════════════════════
