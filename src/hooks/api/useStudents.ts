@@ -6,7 +6,7 @@ import studentApi, {
     StudentListParams,
     CreateStudentData
 } from '@/services/api/studentApi';
-import { handleApiError } from '@/lib/axios';
+import { handleApiError, ApiError } from '@/lib/axios';
 import { AxiosError } from 'axios';
 
 // Query keys
@@ -48,8 +48,8 @@ export const useCreateStudent = () => {
             // Invalidate and refetch students list
             queryClient.invalidateQueries({ queryKey: studentKeys.lists() });
         },
-        onError: (error: AxiosError) => {
-            const errorMessage = handleApiError(error);
+        onError: (error: unknown) => {
+            const errorMessage = handleApiError(error as AxiosError<ApiError>);
             console.error('Create student error:', errorMessage);
             // You can show a toast notification here
         },
@@ -68,8 +68,8 @@ export const useUpdateStudent = () => {
             queryClient.invalidateQueries({ queryKey: studentKeys.detail(variables.id) });
             queryClient.invalidateQueries({ queryKey: studentKeys.lists() });
         },
-        onError: (error: AxiosError) => {
-            const errorMessage = handleApiError(error);
+        onError: (error: unknown) => {
+            const errorMessage = handleApiError(error as AxiosError<ApiError>);
             console.error('Update student error:', errorMessage);
         },
     });
@@ -85,8 +85,8 @@ export const useDeleteStudent = () => {
             // Invalidate students list
             queryClient.invalidateQueries({ queryKey: studentKeys.lists() });
         },
-        onError: (error: AxiosError) => {
-            const errorMessage = handleApiError(error);
+        onError: (error: unknown) => {
+            const errorMessage = handleApiError(error as AxiosError<ApiError>);
             console.error('Delete student error:', errorMessage);
         },
     });

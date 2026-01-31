@@ -29,10 +29,11 @@ export interface User {
 export const authService = {
     // Login
     login: async (credentials: LoginCredentials): Promise<ApiResponse<LoginResponse>> => {
+        // Note: axiosInstance interceptor returns response.data directly
         const response = await axiosInstance.post<ApiResponse<LoginResponse>>(
             API_ENDPOINTS.AUTH.LOGIN,
             credentials
-        );
+        ) as unknown as ApiResponse<LoginResponse>;
 
         // Store tokens in localStorage
         if (response.success) {
@@ -61,10 +62,11 @@ export const authService = {
 
     // Refresh token
     refreshToken: async (refreshToken: string): Promise<ApiResponse<{ access_token: string }>> => {
+        // Note: axiosInstance interceptor returns response.data directly
         const response = await axiosInstance.post<ApiResponse<{ access_token: string }>>(
             API_ENDPOINTS.AUTH.REFRESH,
             { refresh_token: refreshToken }
-        );
+        ) as unknown as ApiResponse<{ access_token: string }>;
 
         // Update access token in localStorage
         if (response.success) {
