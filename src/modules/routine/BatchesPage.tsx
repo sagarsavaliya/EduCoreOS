@@ -278,7 +278,7 @@ const BatchesPage: React.FC = () => {
                         onClick={() => setShowAddModal(true)}
                         className="
               inline-flex items-center gap-2
-              bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600
+              bg-blue-600 dark:bg-blue-600 hover:bg-blue-700 dark:hover:bg-blue-700
               text-white px-4 py-2 rounded-md
               whitespace-nowrap
             "

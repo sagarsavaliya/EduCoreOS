@@ -1215,6 +1215,185 @@
                     "created_at"
                 ]
             }
+        },
+        "timing_settings": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "school_start_time": {
+                        "type": "string"
+                    },
+                    "school_end_time": {
+                        "type": "string"
+                    },
+                    "default_period_duration": {
+                        "type": "number"
+                    },
+                    "gap_between_periods": {
+                        "type": "number"
+                    },
+                    "breaks": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "number"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "after_period": {
+                                    "type": "number"
+                                },
+                                "duration": {
+                                    "type": "number"
+                                },
+                                "applies_to": {
+                                    "type": "string"
+                                },
+                                "batch_ids": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "required": [
+                                "id",
+                                "name",
+                                "after_period",
+                                "duration",
+                                "applies_to"
+                            ]
+                        }
+                    },
+                    "working_days": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "school_start_time",
+                    "school_end_time",
+                    "default_period_duration",
+                    "gap_between_periods",
+                    "breaks",
+                    "working_days",
+                    "status",
+                    "created_at",
+                    "updated_at"
+                ]
+            }
+        },
+        "lecture_configs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "institute_id": {
+                        "type": "number"
+                    },
+                    "branch_id": {
+                        "type": "number"
+                    },
+                    "academic_year_id": {
+                        "type": "number"
+                    },
+                    "standard_id": {
+                        "type": "number"
+                    },
+                    "periods_per_day": {
+                        "type": "number"
+                    },
+                    "subject_allocations": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "subject_id": {
+                                    "type": "number"
+                                },
+                                "lectures_per_week": {
+                                    "type": "number"
+                                },
+                                "max_consecutive_periods": {
+                                    "type": "number"
+                                },
+                                "min_gap_between_periods": {
+                                    "type": "number"
+                                },
+                                "preferred_slots": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "requires_lab": {
+                                    "type": "boolean"
+                                },
+                                "lab_duration_periods": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "subject_id",
+                                "lectures_per_week",
+                                "max_consecutive_periods",
+                                "requires_lab"
+                            ]
+                        }
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "institute_id",
+                    "branch_id",
+                    "academic_year_id",
+                    "standard_id",
+                    "periods_per_day",
+                    "subject_allocations",
+                    "status",
+                    "created_at",
+                    "updated_at"
+                ]
+            }
         }
     },
     "required": [
@@ -1241,6 +1420,8 @@
         "announcements",
         "assignments",
         "audit_logs",
-        "users"
+        "users",
+        "timing_settings",
+        "lecture_configs"
     ]
 }

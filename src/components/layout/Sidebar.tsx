@@ -61,6 +61,18 @@ const Sidebar: React.FC = () => {
             roles: ['Owner', 'Admin', 'Teacher']
         },
         {
+            name: 'Timing Config',
+            href: '/settings/timing',
+            icon: Clock,
+            roles: ['Owner', 'Admin']
+        },
+        {
+            name: 'Lecture Config',
+            href: '/settings/lectures',
+            icon: BookOpen,
+            roles: ['Owner', 'Admin']
+        },
+        {
             name: 'Attendance',
             href: '/attendance',
             icon: CheckCircle,

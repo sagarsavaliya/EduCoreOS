@@ -10,6 +10,8 @@ import SignupPage from '@/modules/auth/SignupPage';
 import DashboardPage from '@/modules/insights/DashboardPage';
 import AcademicPage from '@/modules/academic/AcademicPage';
 import SettingsPage from '@/modules/settings/SettingsPage';
+import TimingSettingsPage from '@/modules/settings/TimingSettingsPage';
+import LectureConfigPage from '@/modules/settings/LectureConfigPage';
 import StudentsPage from '@/modules/people/StudentsPage';
 import TeachersPage from '@/modules/people/TeachersPage';
 import BatchesPage from '@/modules/routine/BatchesPage';
@@ -65,6 +67,22 @@ const AppRoutes: React.FC = () => {
                 element={
                     <ProtectedRoute>
                         <SettingsPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/settings/timing"
+                element={
+                    <ProtectedRoute allowedRoles={['Owner', 'Admin']}>
+                        <TimingSettingsPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/settings/lectures"
+                element={
+                    <ProtectedRoute allowedRoles={['Owner', 'Admin']}>
+                        <LectureConfigPage />
                     </ProtectedRoute>
                 }
             />

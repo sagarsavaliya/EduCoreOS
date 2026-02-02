@@ -103,4 +103,25 @@ export const dal = {
     // Communication
     getAnnouncements: (branchId: number) => (mockData as any).announcements.filter((a: any) => a.branch_id === branchId),
     getAssignments: (branchId: number) => (mockData as any).assignments.filter((a: any) => a.branch_id === branchId),
+
+    // Timing Settings
+    getTimingSettings: (branchId: number) => (mockData as any).timing_settings?.find((ts: any) => ts.branch_id === branchId),
+    getTimingSettingsByInstitute: (instituteId: number) => (mockData as any).timing_settings?.filter((ts: any) => ts.institute_id === instituteId) || [],
+    getAllTimingSettings: () => (mockData as any).timing_settings || [],
+
+    // Lecture Configurations
+    getLectureConfig: (standardId: number, academicYearId: number) =>
+        (mockData as any).lecture_configs?.find((lc: any) => lc.standard_id === standardId && lc.academic_year_id === academicYearId),
+    getLectureConfigsByBranch: (branchId: number) =>
+        (mockData as any).lecture_configs?.filter((lc: any) => lc.branch_id === branchId) || [],
+    getLectureConfigsByInstitute: (instituteId: number) =>
+        (mockData as any).lecture_configs?.filter((lc: any) => lc.institute_id === instituteId) || [],
+    getAllLectureConfigs: () => (mockData as any).lecture_configs || [],
+
+    // Generated Timetables
+    getTimetable: (batchId: number, academicYearId: number) =>
+        (mockData as any).generated_timetables?.filter((t: any) => t.batch_id === batchId && t.academic_year_id === academicYearId) || [],
+    getTimetableByBranch: (branchId: number, academicYearId: number) =>
+        (mockData as any).generated_timetables?.filter((t: any) => t.branch_id === branchId && t.academic_year_id === academicYearId) || [],
+    getAllTimetables: () => (mockData as any).generated_timetables || [],
 };

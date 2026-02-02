@@ -1,12 +1,14 @@
 import React, { useState, useMemo } from 'react';
-import { Calendar, Plus, Clock, User, BookOpen, AlertCircle } from 'lucide-react';
+import { Calendar, Plus, Clock, User, BookOpen, AlertCircle, Wand2 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import Button from '@/components/ui/Button';
 import Select from '@/components/ui/Select';
 import Modal from '@/components/ui/Modal';
 import Input from '@/components/ui/Input';
 import mockData from '@/data/mock-data.json';
-import { useAcademicStore } from '@/hooks/use-stores';
+import { useAcademicStore, useAuthStore } from '@/hooks/use-stores';
+import TimetableGeneratorModal from '@/components/timetable/TimetableGeneratorModal';
+import { GeneratedTimetableEntry } from '@/types/timing';
 
 interface TimetableData {
     id: number;
@@ -30,8 +32,13 @@ interface EnrichedTimetableEntry extends TimetableData {
 
 const TimetablePage: React.FC = () => {
     const { branchId, academicYearId } = useAcademicStore();
+    const { user } = useAuthStore();
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showGeneratorModal, setShowGeneratorModal] = useState(false);
+    const [generatedTimetable, setGeneratedTimetable] = useState<GeneratedTimetableEntry[]>([]);
     const [selectedBatch, setSelectedBatch] = useState<number>(1);
+
+    const isAdmin = user?.role === 'Owner' || user?.role === 'Admin';
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [newEntry, setNewEntry] = useState({
@@ -162,8 +169,9 @@ const TimetablePage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 ">
                         <Select
+                            className='px-3 py-2 border dark:border-slate-600 rounded-md dark:bg-slate-700 dark:text-white w-55'
                             value={selectedBatch.toString()}
                             onChange={(e) => setSelectedBatch(Number(e.target.value))}
                         >
@@ -173,6 +181,15 @@ const TimetablePage: React.FC = () => {
                                 </option>
                             ))}
                         </Select>
+                        {isAdmin && (
+                            <Button
+                                variant="primary"
+                                onClick={() => setShowGeneratorModal(true)}
+                            >
+                                <Wand2 className="h-4 w-4 mr-2" />
+                                Generate
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -420,6 +437,21 @@ const TimetablePage: React.FC = () => {
                     </div>
                 </form>
             </Modal>
+
+            {/* Timetable Generator Modal */}
+            {isAdmin && academicYearId && (
+                <TimetableGeneratorModal
+                    isOpen={showGeneratorModal}
+                    onClose={() => setShowGeneratorModal(false)}
+                    academicYearId={academicYearId}
+                    onGenerated={(timetable) => {
+                        setGeneratedTimetable(timetable);
+                        console.log('Generated timetable:', timetable);
+                        // In a real app, this would save to backend
+                        alert(`Successfully generated ${timetable.length} timetable entries!`);
+                    }}
+                />
+            )}
         </div>
     );
 };
