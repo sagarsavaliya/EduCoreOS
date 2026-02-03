@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Users, Plus, Search, Eye, Edit2, Trash2, UserPlus } from 'lucide-react';
+import { Users, Plus, Search, Eye, Edit2, Trash2, UserPlus, ChevronDown } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -324,40 +324,49 @@ const StudentsPage: React.FC = () => {
                         </div>
 
                         {/* Standard */}
-                        <select
-                            value={filterStandard}
-                            onChange={(e) => setFilterStandard(e.target.value)}
-                            className="px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white min-w-45"
-                        >
-                            <option value="all">All Standards</option>
-                            {standards.map((std: any) => (
-                                <option key={std.id} value={std.id}>{std.name}</option>
-                            ))}
-                        </select>
+                        <div className="relative min-w-45">
+                            <select
+                                value={filterStandard}
+                                onChange={(e) => setFilterStandard(e.target.value)}
+                                className="w-full px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white appearance-none cursor-pointer"
+                            >
+                                <option value="all">All Standards</option>
+                                {standards.map((std: any) => (
+                                    <option key={std.id} value={std.id}>{std.name}</option>
+                                ))}
+                            </select>
+                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none " />
+                        </div>
 
                         {/* Medium */}
-                        <select
-                            value={filterMedium}
-                            onChange={(e) => setFilterMedium(e.target.value)}
-                            className="px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white min-w-40"
-                        >
-                            <option value="all">All Mediums</option>
-                            {mediums.map((med: any) => (
-                                <option key={med.id} value={med.id}>{med.name}</option>
-                            ))}
-                        </select>
+                        <div className="relative min-w-40">
+                            <select
+                                value={filterMedium}
+                                onChange={(e) => setFilterMedium(e.target.value)}
+                                className="w-full px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white appearance-none cursor-pointer"
+                            >
+                                <option value="all">All Mediums</option>
+                                {mediums.map((med: any) => (
+                                    <option key={med.id} value={med.id}>{med.name}</option>
+                                ))}
+                            </select>
+                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none " />
+                        </div>
 
                         {/* Status */}
-                        <select
-                            value={filterStatus}
-                            onChange={(e) => setFilterStatus(e.target.value)}
-                            className="px-3 py-2 border dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white min-w-35"
-                        >
-                            <option value="all">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="alumni">Alumni</option>
-                        </select>
+                        <div className="relative min-w-35">
+                            <select
+                                value={filterStatus}
+                                onChange={(e) => setFilterStatus(e.target.value)}
+                                className="w-full px-3 py-2 border dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white appearance-none cursor-pointer"
+                            >
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="alumni">Alumni</option>
+                            </select>
+                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none " />
+                        </div>
                     </div>
 
                     {/* Right side - Add Button */}

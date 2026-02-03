@@ -200,16 +200,16 @@ const LectureConfigPage: React.FC = () => {
 
     return (
         <MainLayout>
-            <div className="p-6 max-w-6xl mx-auto">
+            <div className="space-y-8 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="h-12 w-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                            <BookOpen className="h-6 w-6 text-purple-600 dark:text-purple-400" strokeWidth={2} />
+                        <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                            <BookOpen className="h-6 w-6 text-white" strokeWidth={2} />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold text-foreground dark:text-white">Lecture Configuration</h1>
-                            <p className="text-muted-foreground dark:text-slate-400">
+                            <h1 className="text-2xl font-bold dark:text-white">Lecture Configuration</h1>
+                            <p className="text-sm dark:text-slate-400">
                                 Configure lectures per subject for each standard
                             </p>
                         </div>
@@ -217,26 +217,29 @@ const LectureConfigPage: React.FC = () => {
                 </div>
 
                 {/* Selection Row */}
-                <div className="bg-card border rounded-3xl p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700 mb-6">
+                <div className="bg-card border rounded-lg p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700 mb-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Academic Year Selector */}
                         <div>
                             <label className="block text-sm font-semibold text-foreground dark:text-white mb-2">
                                 Academic Year
                             </label>
-                            <select
-                                value={selectedAcademicYearId || ''}
-                                onChange={(e) => setSelectedAcademicYearId(Number(e.target.value))}
-                                className="w-full px-4 py-3 rounded-xl border border-border dark:border-slate-600 bg-background dark:bg-slate-900 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                                disabled={isLoading}
-                            >
-                                <option value="">Select Academic Year</option>
-                                {academicYears.map((ay: AcademicYear) => (
-                                    <option key={ay.id} value={ay.id}>
-                                        {ay.name} {!ay.is_locked && ay.status === 'active' && '(Active)'}
-                                    </option>
-                                ))}
-                            </select>
+                            <div className="relative">
+                                <select
+                                    value={selectedAcademicYearId || ''}
+                                    onChange={(e) => setSelectedAcademicYearId(Number(e.target.value))}
+                                    className="w-full px-4 py-3 rounded-lg border border-border dark:border-slate-600 bg-background dark:bg-slate-700 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+                                    disabled={isLoading}
+                                >
+                                    <option value="">Select Academic Year</option>
+                                    {academicYears.map((ay: AcademicYear) => (
+                                        <option key={ay.id} value={ay.id}>
+                                            {ay.name} {!ay.is_locked && ay.status === 'active' && '(Active)'}
+                                        </option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                            </div>
                         </div>
 
                         {/* Standard Selector */}
@@ -244,19 +247,22 @@ const LectureConfigPage: React.FC = () => {
                             <label className="block text-sm font-semibold text-foreground dark:text-white mb-2">
                                 Standard / Class
                             </label>
-                            <select
-                                value={selectedStandardId || ''}
-                                onChange={(e) => setSelectedStandardId(Number(e.target.value))}
-                                className="w-full px-4 py-3 rounded-xl border border-border dark:border-slate-600 bg-background dark:bg-slate-900 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                                disabled={isLoading}
-                            >
-                                <option value="">Select Standard</option>
-                                {standards.map((s: Standard) => (
-                                    <option key={s.id} value={s.id}>
-                                        {s.name}
-                                    </option>
-                                ))}
-                            </select>
+                            <div className="relative">
+                                <select
+                                    value={selectedStandardId || ''}
+                                    onChange={(e) => setSelectedStandardId(Number(e.target.value))}
+                                    className="w-full px-4 py-3 rounded-lg border border-border dark:border-slate-600 bg-background dark:bg-slate-700 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+                                    disabled={isLoading}
+                                >
+                                    <option value="">Select Standard</option>
+                                    {standards.map((s: Standard) => (
+                                        <option key={s.id} value={s.id}>
+                                            {s.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                            </div>
                         </div>
 
                         {/* Periods Per Day */}
@@ -264,23 +270,26 @@ const LectureConfigPage: React.FC = () => {
                             <label className="block text-sm font-semibold text-foreground dark:text-white mb-2">
                                 Periods Per Day
                             </label>
-                            <select
-                                value={periodsPerDay}
-                                onChange={(e) => setPeriodsPerDay(Number(e.target.value))}
-                                className="w-full px-4 py-3 rounded-xl border border-border dark:border-slate-600 bg-background dark:bg-slate-900 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                                disabled={!selectedStandardId}
-                            >
-                                {[6, 7, 8, 9, 10].map(num => (
-                                    <option key={num} value={num}>{num} periods</option>
-                                ))}
-                            </select>
+                            <div className="relative">
+                                <select
+                                    value={periodsPerDay}
+                                    onChange={(e) => setPeriodsPerDay(Number(e.target.value))}
+                                    className="w-full px-4 py-3 rounded-lg border border-border dark:border-slate-600 bg-background dark:bg-slate-700 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+                                    disabled={!selectedStandardId}
+                                >
+                                    {[6, 7, 8, 9, 10].map(num => (
+                                        <option key={num} value={num}>{num} periods</option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Info Banner */}
                 {selectedStandardId && selectedAcademicYearId && (
-                    <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-2xl p-4 mb-6 flex items-start gap-3">
+                    <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6 flex items-start gap-3">
                         <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
                         <div className="text-sm text-blue-800 dark:text-blue-300">
                             <strong>Allocation Summary:</strong> {totalLecturesPerWeek} / {maxPeriodsPerWeek} periods per week allocated
@@ -313,7 +322,7 @@ const LectureConfigPage: React.FC = () => {
                         </div>
 
                         {subjectAllocations.length === 0 ? (
-                            <div className="bg-card border rounded-3xl p-8 shadow-sm dark:bg-slate-800 dark:border-slate-700 text-center">
+                            <div className="bg-card border rounded-lg p-8 shadow-sm dark:bg-slate-800 dark:border-slate-700 text-center">
                                 <p className="text-muted-foreground dark:text-slate-400">
                                     No subjects found for this standard. Please add subjects in the Academic module first.
                                 </p>
@@ -326,7 +335,7 @@ const LectureConfigPage: React.FC = () => {
                                 return (
                                     <div
                                         key={allocation.subject_id}
-                                        className="bg-card border rounded-2xl shadow-sm dark:bg-slate-800 dark:border-slate-700 overflow-hidden"
+                                        className="bg-card border rounded-lg shadow-sm dark:bg-slate-800 dark:border-slate-700 overflow-hidden"
                                     >
                                         {/* Subject Header */}
                                         <div
@@ -334,7 +343,7 @@ const LectureConfigPage: React.FC = () => {
                                             onClick={() => toggleSubjectExpanded(allocation.subject_id)}
                                         >
                                             <div className="flex items-center gap-4">
-                                                <div className="h-10 w-10 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                                                <div className="h-10 w-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
                                                     <BookOpen className="h-5 w-5 text-primary" />
                                                 </div>
                                                 <div>
@@ -388,10 +397,11 @@ const LectureConfigPage: React.FC = () => {
                                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                                     {/* Scheduling Constraints */}
                                                     <div>
-                                                        <label className="block text-sm font-semibold text-foreground dark:text-white mb-2 items-center gap-2">
+                                                        <label className="flex items-center gap-2 text-sm font-semibold text-foreground dark:text-white mb-2">
                                                             <Clock className="h-4 w-4" />
-                                                            Max Consecutive Periods
+                                                            <span>Max Consecutive Periods</span>
                                                         </label>
+                                                        <div className="relative">
                                                         <select
                                                             value={allocation.max_consecutive_periods}
                                                             onChange={(e) => updateAllocation(
@@ -399,12 +409,14 @@ const LectureConfigPage: React.FC = () => {
                                                                 'max_consecutive_periods',
                                                                 Number(e.target.value)
                                                             )}
-                                                            className="w-full px-3 py-2 rounded-xl border border-border dark:border-slate-600 bg-background dark:bg-slate-800 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                                                            className="w-full px-3 py-2 rounded-lg border border-border dark:border-slate-600 bg-background dark:bg-slate-800 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
                                                         >
                                                             {[1, 2, 3, 4].map(num => (
                                                                 <option key={num} value={num}>{num} period{num > 1 ? 's' : ''}</option>
                                                             ))}
                                                         </select>
+                                                        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                                                        </div>
                                                         <p className="text-xs text-muted-foreground dark:text-slate-500 mt-1">
                                                             Maximum back-to-back periods
                                                         </p>
@@ -414,6 +426,7 @@ const LectureConfigPage: React.FC = () => {
                                                         <label className="block text-sm font-semibold text-foreground dark:text-white mb-2">
                                                             Min Gap Between Periods
                                                         </label>
+                                                        <div className="relative">
                                                         <select
                                                             value={allocation.min_gap_between_periods}
                                                             onChange={(e) => updateAllocation(
@@ -421,12 +434,14 @@ const LectureConfigPage: React.FC = () => {
                                                                 'min_gap_between_periods',
                                                                 Number(e.target.value)
                                                             )}
-                                                            className="w-full px-3 py-2 rounded-xl border border-border dark:border-slate-600 bg-background dark:bg-slate-800 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                                                            className="w-full px-3 py-2 rounded-lg border border-border dark:border-slate-600 bg-background dark:bg-slate-800 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
                                                         >
                                                             {[0, 1, 2, 3].map(num => (
                                                                 <option key={num} value={num}>{num} period{num !== 1 ? 's' : ''}</option>
                                                             ))}
-                                                        </select>
+                                                                    </select>
+                                                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                                                        </div>
                                                         <p className="text-xs text-muted-foreground dark:text-slate-500 mt-1">
                                                             If same subject repeats in a day
                                                         </p>
@@ -486,6 +501,7 @@ const LectureConfigPage: React.FC = () => {
                                                                     <span className="text-sm text-muted-foreground dark:text-slate-400">
                                                                         Lab Duration:
                                                                     </span>
+                                                                    <div className="relative">
                                                                     <select
                                                                         value={allocation.lab_duration_periods}
                                                                         onChange={(e) => updateAllocation(
@@ -493,13 +509,13 @@ const LectureConfigPage: React.FC = () => {
                                                                             'lab_duration_periods',
                                                                             Number(e.target.value)
                                                                         )}
-                                                                        className="px-3 py-1.5 rounded-lg border border-border dark:border-slate-600 bg-background dark:bg-slate-800 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                                                                        className="px-3 py-1.5 rounded-lg border border-border dark:border-slate-600 bg-background dark:bg-slate-800 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
                                                                     >
                                                                         {[2, 3, 4].map(num => (
                                                                             <option key={num} value={num}>{num} periods</option>
                                                                         ))}
-                                                                    </select>
-                                                                </div>
+                                                                    </select>                                                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none" />
+                                                                    </div>                                                                </div>
                                                             )}
                                                         </div>
                                                         <p className="text-xs text-muted-foreground dark:text-slate-500 mt-1">
@@ -520,7 +536,7 @@ const LectureConfigPage: React.FC = () => {
                                 onClick={handleSave}
                                 disabled={isSaving || subjectAllocations.length === 0}
                                 className={cn(
-                                    "flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all",
+                                    "flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all",
                                     saveSuccess
                                         ? "bg-green-500 text-white"
                                         : "bg-primary text-white hover:bg-primary/90",
@@ -533,7 +549,7 @@ const LectureConfigPage: React.FC = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="bg-card border rounded-3xl p-12 shadow-sm dark:bg-slate-800 dark:border-slate-700 text-center">
+                    <div className="bg-card border rounded-lg p-12 shadow-sm dark:bg-slate-800 dark:border-slate-700 text-center">
                         <GraduationCap className="h-12 w-12 text-muted-foreground dark:text-slate-500 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold text-foreground dark:text-white mb-2">
                             Select Standard & Academic Year
@@ -549,25 +565,25 @@ const LectureConfigPage: React.FC = () => {
                     <div className="mt-6 bg-linear-to-br from-purple-50 to-blue-50 dark:from-purple-950/30 dark:to-blue-950/30 border border-purple-200 dark:border-purple-800 rounded-3xl p-6">
                         <h3 className="text-lg font-bold text-foreground dark:text-white mb-4">Configuration Summary</h3>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="bg-white/80 dark:bg-slate-800/80 rounded-xl p-4 text-center">
+                            <div className="bg-white/80 dark:bg-slate-800/80 rounded-lg p-4 text-center">
                                 <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                                     {subjectAllocations.length}
                                 </div>
                                 <div className="text-sm text-muted-foreground dark:text-slate-400">Subjects</div>
                             </div>
-                            <div className="bg-white/80 dark:bg-slate-800/80 rounded-xl p-4 text-center">
+                            <div className="bg-white/80 dark:bg-slate-800/80 rounded-lg p-4 text-center">
                                 <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                                     {totalLecturesPerWeek}
                                 </div>
                                 <div className="text-sm text-muted-foreground dark:text-slate-400">Periods/Week</div>
                             </div>
-                            <div className="bg-white/80 dark:bg-slate-800/80 rounded-xl p-4 text-center">
+                            <div className="bg-white/80 dark:bg-slate-800/80 rounded-lg p-4 text-center">
                                 <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                                     {periodsPerDay}
                                 </div>
                                 <div className="text-sm text-muted-foreground dark:text-slate-400">Periods/Day</div>
                             </div>
-                            <div className="bg-white/80 dark:bg-slate-800/80 rounded-xl p-4 text-center">
+                            <div className="bg-white/80 dark:bg-slate-800/80 rounded-lg p-4 text-center">
                                 <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">
                                     {subjectAllocations.filter(a => a.requires_lab).length}
                                 </div>

@@ -64,10 +64,17 @@ const AcademicPage: React.FC = () => {
         <MainLayout>
             <div className="space-y-8 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
                 <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-foreground font-display">Academic Core</h1>
-                        <p className="text-muted-foreground mt-1">Manage standards, subjects, mediums, and academic years.</p>
-                    </div>
+                        <div>
+                            <div className="flex items-center gap-3 mb-2">
+                                <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                                    <BookOpen className="h-6 w-6 text-white" strokeWidth={2} />
+                                </div>
+                                <div>
+                                    <h1 className="text-2xl font-bold dark:text-white">Academic Core</h1>
+                                    <p className="text-sm dark:text-slate-400">Manage standards, subjects, mediums, and academic years.</p>
+                                </div>
+                            </div>
+                        </div>
                     <button
                         onClick={handleAddNew}
                         className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors shadow-sm"

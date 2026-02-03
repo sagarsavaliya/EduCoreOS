@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { DollarSign, Plus, Search, Eye, CreditCard, AlertCircle, TrendingUp, Users } from 'lucide-react';
+import { DollarSign, Plus, Search, Eye, CreditCard, AlertCircle, TrendingUp, Users, ChevronDown } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -306,17 +306,20 @@ const FinancePage: React.FC = () => {
                     </div>
 
                     {/* Status */}
-                    <select
-                        value={filterStatus}
-                        onChange={(e) => setFilterStatus(e.target.value)}
-                        className="px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white min-w-40"
-                    >
-                        <option value="all">All Status</option>
-                        <option value="paid">Paid</option>
-                        <option value="partial">Partial</option>
-                        <option value="pending">Pending</option>
-                        <option value="overdue">Overdue</option>
-                    </select>
+                    <div className="relative min-w-40">
+                        <select
+                            value={filterStatus}
+                            onChange={(e) => setFilterStatus(e.target.value)}
+                            className="w-full px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white appearance-none cursor-pointer"
+                        >
+                            <option value="all">All Status</option>
+                            <option value="paid">Paid</option>
+                            <option value="partial">Partial</option>
+                            <option value="pending">Pending</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                    </div>
                 </div>
             </div>
 

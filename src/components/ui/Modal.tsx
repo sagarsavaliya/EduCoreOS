@@ -48,9 +48,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
           <button
             onClick={onClose}
             className="h-9 w-9 rounded-lg cursor-pointer flex items-center justify-center
-                       dark:bg-slate-100  dark:hover:bg-slate-700 transition"
+                         dark:bg-slate-700 transition"
           >
-            <X className="h-5 w-5  dark:text-slate-400" />
+            <X className="h-5 w-5  dark:text-slate-300" />
           </button>
         </div>
 

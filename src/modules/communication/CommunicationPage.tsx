@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Send, Plus, MessageSquare, Users, Bell, FileText, Calendar } from 'lucide-react';
+import { Send, Plus, MessageSquare, Users, Bell, FileText, Calendar, ChevronDown } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -274,7 +274,7 @@ const CommunicationPage: React.FC = () => {
                             <button
                                 onClick={() => setActiveTab('announcements')}
                                 className={cn(
-                                    "px-4 py-2 rounded-lg font-semibold text-sm transition-all",
+                                    "px-3 py-2 rounded-lg font-semibold text-md transition-all",
                                     activeTab === 'announcements'
                                         ? "bg-blue-600 dark:bg-blue-600 text-white shadow-sm"
                                         : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
@@ -285,7 +285,7 @@ const CommunicationPage: React.FC = () => {
                             <button
                                 onClick={() => setActiveTab('assignments')}
                                 className={cn(
-                                    "px-4 py-2 rounded-lg font-semibold text-sm transition-all",
+                                    "px-3 py-2 rounded-lg font-semibold text-md transition-all",
                                     activeTab === 'assignments'
                                         ? "bg-blue-600 dark:bg-blue-600 text-white shadow-sm"
                                         : "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
@@ -296,16 +296,19 @@ const CommunicationPage: React.FC = () => {
                         </div>
 
                         {/* Filter */}
-                        <select
-                            value={filterRole}
-                            onChange={(e) => setFilterRole(e.target.value)}
-                            className="px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white min-w-45"
-                        >
-                            <option value="all">All Recipients</option>
-                            <option value="parents">Parents</option>
-                            <option value="teachers">Teachers</option>
-                            <option value="students">Students</option>
-                        </select>
+                        <div className="relative min-w-45">
+                            <select
+                                value={filterRole}
+                                onChange={(e) => setFilterRole(e.target.value)}
+                                className="w-full px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white appearance-none cursor-pointer"
+                            >
+                                <option value="all">All Recipients</option>
+                                <option value="parents">Parents</option>
+                                <option value="teachers">Teachers</option>
+                                <option value="students">Students</option>
+                            </select>
+                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                        </div>
                     </div>
 
                     {/* Right side - New Message Button */}

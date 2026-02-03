@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useMockQuery, dal } from '@/hooks/use-mock-data';
 import { useAuthStore } from '@/hooks/use-stores';
-import { Clock, Calendar, Coffee, CalendarDays, Save, Plus, Trash2, Info } from 'lucide-react';
+import { Clock, Calendar, Coffee, CalendarDays, Save, Plus, Trash2, Info, ChevronDown } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import {
     InstituteTimingSettings,
@@ -162,25 +162,28 @@ const TimingSettingsPage: React.FC = () => {
 
     return (
         <MainLayout>
-            <div className="space-y-8 max-w-6xl">
+            <div className="space-y-8 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
                 {/* Header */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-foreground font-display">
-                            Timing Configuration
-                        </h1>
-                        <p className="text-muted-foreground mt-1">
-                            Configure school hours, periods, breaks, and working days for your institute.
-                        </p>
-                    </div>
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="flex items-center gap-3 mb-2">
+                                <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                                    <Clock className="h-6 w-6 text-white" strokeWidth={2} />
+                                </div>
+                                <div>
+                                    <h1 className="text-2xl font-bold dark:text-white">Timing Configuration</h1>
+                                    <p className="text-sm dark:text-slate-400">Configure school hours, periods, breaks, and working days for your institute.</p>
+                                </div>
+                            </div>
+                        </div>
                     <button
                         onClick={handleSave}
                         disabled={isSaving}
-                        className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg font-semibold text-sm hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
                     >
                         {isSaving ? (
                             <>
-                                <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-lg animate-spin" />
                                 Saving...
                             </>
                         ) : (
@@ -194,8 +197,8 @@ const TimingSettingsPage: React.FC = () => {
 
                 {/* Success Message */}
                 {saveSuccess && (
-                    <div className="p-4 rounded-xl bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
-                        <div className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center">
+                    <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                        <div className="h-8 w-8 rounded-lg bg-green-500 flex items-center justify-center">
                             <Save className="h-4 w-4 text-white" />
                         </div>
                         <p className="text-sm font-semibold text-green-800 dark:text-green-200">
@@ -207,13 +210,13 @@ const TimingSettingsPage: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     {/* Sidebar Tabs */}
                     <div className="lg:col-span-1">
-                        <div className="bg-card border rounded-2xl p-2 space-y-1 dark:bg-slate-800 dark:border-slate-700">
+                        <div className="bg-card border rounded-lg p-2 space-y-1 dark:bg-slate-800 dark:border-slate-700">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={cn(
-                                        "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all",
+                                        "w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium text-sm transition-all",
                                         activeTab === tab.id
                                             ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
                                             : "text-foreground dark:text-slate-300 hover:bg-secondary dark:hover:bg-slate-700"
@@ -226,7 +229,7 @@ const TimingSettingsPage: React.FC = () => {
                         </div>
 
                         {/* Quick Stats */}
-                        <div className="mt-4 bg-card border rounded-2xl p-4 dark:bg-slate-800 dark:border-slate-700">
+                        <div className="mt-4 bg-card border rounded-lg p-4 dark:bg-slate-800 dark:border-slate-700">
                             <h3 className="text-sm font-semibold mb-3 dark:text-white">Summary</h3>
                             <div className="space-y-2 text-sm">
                                 <div className="flex justify-between">
@@ -253,7 +256,7 @@ const TimingSettingsPage: React.FC = () => {
 
                     {/* Content Area */}
                     <div className="lg:col-span-3 space-y-6">
-                        <div className="bg-card border rounded-3xl p-8 shadow-sm dark:bg-slate-800 dark:border-slate-700">
+                        <div className="bg-card border rounded-lg p-8 shadow-sm dark:bg-slate-800 dark:border-slate-700">
                             {/* School Hours Tab */}
                             {activeTab === 'school-hours' && (
                                 <div className="space-y-6">
@@ -273,7 +276,7 @@ const TimingSettingsPage: React.FC = () => {
                                                 type="time"
                                                 value={schoolStartTime}
                                                 onChange={(e) => setSchoolStartTime(e.target.value)}
-                                                className="w-full px-4 py-3 rounded-xl border-2 border-input dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
+                                                className="w-full px-4 py-3 rounded-lg border-2 border-input dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
                                             />
                                         </div>
                                         <div>
@@ -284,12 +287,12 @@ const TimingSettingsPage: React.FC = () => {
                                                 type="time"
                                                 value={schoolEndTime}
                                                 onChange={(e) => setSchoolEndTime(e.target.value)}
-                                                className="w-full px-4 py-3 rounded-xl border-2 border-input dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
+                                                className="w-full px-4 py-3 rounded-lg border-2 border-input dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 flex items-start gap-3">
+                                    <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 flex items-start gap-3">
                                         <Info className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
                                         <div>
                                             <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
@@ -318,33 +321,39 @@ const TimingSettingsPage: React.FC = () => {
                                             <label className="block text-sm font-semibold mb-2 dark:text-white">
                                                 Period Duration (minutes)
                                             </label>
-                                            <select
-                                                value={periodDuration}
-                                                onChange={(e) => setPeriodDuration(Number(e.target.value))}
-                                                className="w-full px-4 py-3 rounded-xl border-2 border-input dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                            >
-                                                {PERIOD_DURATION_OPTIONS.map(duration => (
-                                                    <option key={duration} value={duration}>{duration} minutes</option>
-                                                ))}
-                                            </select>
+                                            <div className="relative">
+                                                <select
+                                                    value={periodDuration}
+                                                    onChange={(e) => setPeriodDuration(Number(e.target.value))}
+                                                    className="w-full px-4 py-3 rounded-lg border-2 border-input dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all appearance-none cursor-pointer"
+                                                >
+                                                    {PERIOD_DURATION_OPTIONS.map(duration => (
+                                                        <option key={duration} value={duration}>{duration} minutes</option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                                            </div>
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold mb-2 dark:text-white">
                                                 Gap Between Periods (minutes)
                                             </label>
-                                            <select
-                                                value={gapBetweenPeriods}
-                                                onChange={(e) => setGapBetweenPeriods(Number(e.target.value))}
-                                                className="w-full px-4 py-3 rounded-xl border-2 border-input dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all"
-                                            >
-                                                {GAP_DURATION_OPTIONS.map(gap => (
-                                                    <option key={gap} value={gap}>{gap} minutes</option>
-                                                ))}
-                                            </select>
+                                            <div className="relative">
+                                                <select
+                                                    value={gapBetweenPeriods}
+                                                    onChange={(e) => setGapBetweenPeriods(Number(e.target.value))}
+                                                    className="w-full px-4 py-3 rounded-lg border-2 border-input dark:bg-slate-700 dark:border-slate-600 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all appearance-none cursor-pointer"
+                                                >
+                                                    {GAP_DURATION_OPTIONS.map(gap => (
+                                                        <option key={gap} value={gap}>{gap} minutes</option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800">
+                                    <div className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-800">
                                         <p className="text-sm font-medium text-emerald-800 dark:text-emerald-200">
                                             Calculated Periods: <span className="font-bold">{totalPeriods} periods per day</span>
                                         </p>
@@ -378,7 +387,7 @@ const TimingSettingsPage: React.FC = () => {
                                         {breaks.map((breakItem, index) => (
                                             <div
                                                 key={index}
-                                                className="p-5 rounded-xl bg-secondary/30 dark:bg-slate-700/50 border dark:border-slate-600"
+                                                className="p-5 rounded-lg bg-secondary/30 dark:bg-slate-700/50 border dark:border-slate-600"
                                             >
                                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                                                     <div>
@@ -396,15 +405,18 @@ const TimingSettingsPage: React.FC = () => {
                                                         <label className="block text-xs font-semibold mb-1.5 dark:text-slate-300">
                                                             After Period
                                                         </label>
-                                                        <select
-                                                            value={breakItem.after_period}
-                                                            onChange={(e) => handleUpdateBreak(index, 'after_period', Number(e.target.value))}
-                                                            className="w-full px-3 py-2 rounded-lg border dark:border-slate-500 dark:bg-slate-600 dark:text-white focus:outline-none focus:border-blue-500 text-sm"
-                                                        >
-                                                            {Array.from({ length: totalPeriods }, (_, i) => i + 1).map(p => (
-                                                                <option key={p} value={p}>Period {p}</option>
-                                                            ))}
-                                                        </select>
+                                                        <div className="relative">
+                                                            <select
+                                                                value={breakItem.after_period}
+                                                                onChange={(e) => handleUpdateBreak(index, 'after_period', Number(e.target.value))}
+                                                                className="w-full px-3 py-2 rounded-lg border dark:border-slate-500 dark:bg-slate-600 dark:text-white focus:outline-none focus:border-blue-500 text-sm appearance-none cursor-pointer"
+                                                            >
+                                                                {Array.from({ length: totalPeriods }, (_, i) => i + 1).map(p => (
+                                                                    <option key={p} value={p}>Period {p}</option>
+                                                                ))}
+                                                            </select>
+                                                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none" />
+                                                        </div>
                                                     </div>
                                                     <div>
                                                         <label className="block text-xs font-semibold mb-1.5 dark:text-slate-300">
@@ -433,7 +445,7 @@ const TimingSettingsPage: React.FC = () => {
                                         ))}
 
                                         {breaks.length === 0 && (
-                                            <div className="text-center py-8 border-2 border-dashed dark:border-slate-700 rounded-xl">
+                                            <div className="text-center py-8 border-2 border-dashed dark:border-slate-700 rounded-lg">
                                                 <Coffee className="h-10 w-10 mx-auto text-muted-foreground mb-2" />
                                                 <p className="text-sm text-muted-foreground">No breaks configured. Add a break to get started.</p>
                                             </div>
@@ -460,7 +472,7 @@ const TimingSettingsPage: React.FC = () => {
                                                     key={day}
                                                     onClick={() => toggleWorkingDay(day)}
                                                     className={cn(
-                                                        "p-4 rounded-xl border-2 font-semibold text-sm transition-all",
+                                                        "p-4 rounded-lg border-2 font-semibold text-sm transition-all",
                                                         isSelected
                                                             ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/20"
                                                             : "border-input dark:border-slate-600 dark:text-slate-300 hover:border-blue-400 dark:hover:border-blue-500"
@@ -480,7 +492,7 @@ const TimingSettingsPage: React.FC = () => {
                                         })}
                                     </div>
 
-                                    <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                                    <div className="p-4 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
                                         <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
                                             Working Days: <span className="font-bold">{workingDays.length} days per week</span>
                                         </p>
@@ -493,7 +505,7 @@ const TimingSettingsPage: React.FC = () => {
                         </div>
 
                         {/* Period Slots Preview */}
-                        <div className="bg-card border rounded-3xl p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700">
+                        <div className="bg-card border rounded-lg p-6 shadow-sm dark:bg-slate-800 dark:border-slate-700">
                             <h3 className="text-lg font-bold mb-4 dark:text-white">Generated Period Slots Preview</h3>
                             <div className="overflow-x-auto">
                                 <div className="flex gap-2 min-w-max pb-2">
@@ -501,7 +513,7 @@ const TimingSettingsPage: React.FC = () => {
                                         <div
                                             key={index}
                                             className={cn(
-                                                "shrink-0 w-24 p-3 rounded-xl text-center",
+                                                "shrink-0 w-24 p-3 rounded-lg text-center",
                                                 slot.is_break
                                                     ? "bg-amber-100 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-700"
                                                     : "bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800"

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useMockQuery, dal } from '@/hooks/use-mock-data';
 import { useAcademicStore, useAuthStore } from '@/hooks/use-stores';
-import { Users, GraduationCap, School, TrendingUp, AlertCircle, Calendar, BookOpen, CreditCard, Clock, Award, Target, BarChart3, Mail, Phone } from 'lucide-react';
+import { LayoutDashboard, Users, GraduationCap, School, TrendingUp, AlertCircle, Calendar, BookOpen, CreditCard, Clock, Award, Target, BarChart3, Mail, Phone } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import Button from '@/components/ui/Button';
 import Select from '@/components/ui/Select';
@@ -126,10 +126,15 @@ const OwnerDashboard: React.FC<any> = ({ isLoading, students, batches, totalReve
     };
 
     return (
-        <div className="space-y-8 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight text-foreground font-display">Owner Dashboard</h1>
-                <p className="text-muted-foreground mt-1">Strategic insights and operational metrics for your institute.</p>
+        <div className="space-y-6 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                    <LayoutDashboard className="h-6 w-6 text-white" strokeWidth={2} />
+                </div>
+                <div>
+                    <h1 className="text-2xl font-bold dark:text-white">Owner Dashboard</h1>
+                    <p className="text-sm  dark:text-slate-400">Strategic insights and operational metrics for your institute.</p>
+                </div>
             </div>
  
             {/* KPI Cards - Professional Design */}
@@ -639,10 +644,15 @@ const AdminDashboard: React.FC<any> = ({ isLoading, students, batches, totalReve
     };
 
     return (
-        <div className="space-y-8 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight text-foreground font-display">Admin Dashboard</h1>
-                <p className="text-muted-foreground mt-1">Manage daily operations and branch activities.</p>
+        <div className="space-y-6 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                    <LayoutDashboard className="h-6 w-6 text-white" strokeWidth={2} />
+                </div>
+                <div>
+                    <h1 className="text-2xl font-bold dark:text-white">Admin Dashboard</h1>
+                    <p className="text-sm  dark:text-slate-400">Manage daily operations and branch activities.</p>
+                </div>
             </div>
 
             {/* KPI Cards */}
@@ -935,10 +945,15 @@ const AdminDashboard: React.FC<any> = ({ isLoading, students, batches, totalReve
 // Teacher Dashboard - My Classes
 const TeacherDashboard: React.FC<any> = ({ isLoading, batches, tests }) => {
     return (
-        <div className="space-y-8 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight text-foreground font-display">Teacher Dashboard</h1>
-                <p className="text-muted-foreground mt-1">Your classes, attendance, and assessments at a glance.</p>
+        <div className="space-y-6 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                    <LayoutDashboard className="h-6 w-6 text-white" strokeWidth={2} />
+                </div>
+                <div>
+                    <h1 className="text-2xl font-bold dark:text-white">Teacher Dashboard</h1>
+                    <p className="text-sm  dark:text-slate-400">Your classes, attendance, and assessments at a glance.</p>
+                </div>
             </div>
 
             {/* Today's Schedule */}
@@ -997,10 +1012,15 @@ const TeacherDashboard: React.FC<any> = ({ isLoading, batches, tests }) => {
 // Parent Dashboard - Child Progress
 const ParentDashboard: React.FC<any> = ({ isLoading }) => {
     return (
-        <div className="space-y-8 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight text-foreground font-display">Parent Dashboard</h1>
-                <p className="text-muted-foreground mt-1">Monitor your child's academic progress and activities.</p>
+        <div className="space-y-6 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                    <LayoutDashboard className="h-6 w-6 text-white" strokeWidth={2} />
+                </div>
+                <div>
+                    <h1 className="text-2xl font-bold dark:text-white">Parent Dashboard</h1>
+                    <p className="text-sm  dark:text-slate-400">Monitor your child's academic progress and activities.</p>
+                </div>
             </div>
 
             {/* Child Overview */}
@@ -1082,10 +1102,15 @@ const ParentDashboard: React.FC<any> = ({ isLoading }) => {
 // Student Dashboard - My Progress
 const StudentDashboard: React.FC<any> = ({ isLoading }) => {
     return (
-        <div className="space-y-8 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight text-foreground font-display">My Dashboard</h1>
-                <p className="text-muted-foreground mt-1">Track your academic progress and upcoming activities.</p>
+        <div className="space-y-6 rounded-lg dark:bg-slate-900 border dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+                <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                    <LayoutDashboard className="h-6 w-6 text-white" strokeWidth={2} />
+                </div>
+                <div>
+                    <h1 className="text-2xl font-bold dark:text-white">My Dashboard</h1>
+                    <p className="text-sm  dark:text-slate-400">Track your academic progress and upcoming activities.</p>
+                </div>
             </div>
 
             {/* Performance Overview */}

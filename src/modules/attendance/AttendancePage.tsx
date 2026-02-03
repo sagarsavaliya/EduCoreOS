@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { CheckCircle, XCircle, Clock, Calendar, Users, Download, Filter } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Calendar, Users, Download, Filter, ChevronDown } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import Button from '@/components/ui/Button';
 import Select from '@/components/ui/Select';
@@ -234,18 +234,21 @@ const AttendancePage: React.FC = () => {
                     {/* Batch */}
                     <div>
                         <label className="block text-sm font-semibold mb-2.5  dark:text-slate-300">Select Batch</label>
-                        <select
-                            value={selectedBatch.toString()}
-                            onChange={(e) => setSelectedBatch(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
-                            className="px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white min-w-70"
-                        >
-                            <option value="all">All Batches</option>
-                            {batches.map((batch: any) => (
-                                <option key={batch.id} value={batch.id}>
-                                    {batch.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="relative min-w-70">
+                            <select
+                                value={selectedBatch.toString()}
+                                onChange={(e) => setSelectedBatch(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
+                                className="w-full px-3 py-2 border  dark:border-slate-600 rounded-md  dark:bg-slate-700 dark:text-white appearance-none cursor-pointer"
+                            >
+                                <option value="all">All Batches</option>
+                                {batches.map((batch: any) => (
+                                    <option key={batch.id} value={batch.id}>
+                                        {batch.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 pointer-events-none" />
+                        </div>
                     </div>
 
                     {/* Date */}
